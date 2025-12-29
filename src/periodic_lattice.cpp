@@ -105,6 +105,37 @@ namespace PeriodicBox
     lattice->K_min_norm = get_min_nonzero_lattice_vector_norm(K);
   }
 
+  void LatticeInfoMethods::set_lattice_with_vector(LatticeInfo* lattice)
+  {
+    if (lattice->dimension <= 0 || lattice->dimension > 3)
+      DIE("PeriodicBox::LatticeInfoMethods::SetLatticeWithVector() Lattice parameters not properly set!");
+
+    const double* R = lattice->unit_cell.real_space;
+    double* K = lattice->unit_cell.reciprocal_space;
+
+    lattice->V_real = R[0] * R[4] * R[8] + R[1] * R[5] * R[6] + R[2] * R[3] * R[7]
+                    - R[2] * R[4] * R[6] - R[0] * R[5] * R[7] - R[1] * R[3] * R[8];
+
+    K[0] = 2 * PI / lattice->V_real * (R[4] * R[8] - R[5] * R[7]);
+    K[1] = 2 * PI / lattice->V_real * (R[5] * R[6] - R[3] * R[8]);
+    K[2] = 2 * PI / lattice->V_real * (R[3] * R[7] - R[4] * R[6]);
+    K[3] = 2 * PI / lattice->V_real * (R[7] * R[2] - R[8] * R[1]);
+    K[4] = 2 * PI / lattice->V_real * (R[8] * R[0] - R[6] * R[2]);
+    K[5] = 2 * PI / lattice->V_real * (R[6] * R[1] - R[7] * R[0]);
+    K[6] = 2 * PI / lattice->V_real * (R[1] * R[5] - R[2] * R[4]);
+    K[7] = 2 * PI / lattice->V_real * (R[2] * R[3] - R[0] * R[5]);
+    K[8] = 2 * PI / lattice->V_real * (R[0] * R[4] - R[1] * R[3]);
+
+    lattice->K_min_norm = get_min_nonzero_lattice_vector_norm(K);
+
+    lattice->a = sqrt(NORM2(R + 0));
+    lattice->b = sqrt(NORM2(R + 3));
+    lattice->c = sqrt(NORM2(R + 6));
+    lattice->alpha = acos((R[3] * R[6] + R[4] * R[7] + R[5] * R[8]) / (lattice->b * lattice->c));
+    lattice->beta = acos((R[0] * R[6] + R[1] * R[7] + R[2] * R[8]) / (lattice->a * lattice->c));
+    lattice->gamma = acos((R[0] * R[3] + R[1] * R[4] + R[2] * R[5]) / (lattice->a * lattice->b));
+  }
+
   void LatticeInfoMethods::set_trash_default(LatticeInfo* lattice)
   {
     lattice->dimension = -1;

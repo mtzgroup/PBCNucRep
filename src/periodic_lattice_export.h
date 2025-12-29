@@ -13,6 +13,7 @@ extern "C" {
     namespace LatticeInfoMethods
     {
       extern DSOGLOBAL void calculate_lattice_vector(LatticeInfo* lattice);
+      extern DSOGLOBAL void set_lattice_with_vector(LatticeInfo* lattice);
       extern DSOGLOBAL void set_trash_default(LatticeInfo* lattice);
       extern DSOGLOBAL void print(const LatticeInfo& lattice);
     }
