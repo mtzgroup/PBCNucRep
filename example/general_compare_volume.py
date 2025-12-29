@@ -19,7 +19,7 @@ cell = pyscf.M(
     verbose = 4,
 )
 
-atom_grids_tab = gen_atomic_grids(cell, atom_grid = (10, 14), radi_method = treutler_ahlrichs, level = None, prune = None)
+atom_grids_tab = gen_atomic_grids(cell, atom_grid = (99, 590), radi_method = treutler_ahlrichs, level = None, prune = None)
 atm_coords = cell.atom_coords()
 atomic_radii = pyscf.data.radii.BRAGG
 lattice_vector = cell.lattice_vectors().flatten()
@@ -34,7 +34,8 @@ with open(filename, "w") as f:
     f.write(line)
 
     for i_atom in range(cell.natm):
-        line = f"{atm_coords[i_atom, 0]:.16f} {atm_coords[i_atom, 1]:.16f} {atm_coords[i_atom, 2]:.16f} {atomic_radii[i_atom]:.16f}\n"
+        i_element = cell.atom_charges()[i_atom]
+        line = f"{atm_coords[i_atom, 0]:.16f} {atm_coords[i_atom, 1]:.16f} {atm_coords[i_atom, 2]:.16f} {atomic_radii[i_element]:.16f}\n"
         f.write(line)
 
     for i_atom in range(cell.natm):

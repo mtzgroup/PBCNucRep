@@ -71,10 +71,10 @@ int main()
             break;
 
         data.pop_front();
-        atom_radius.push_back(line_xyz[0]);
+        atom_xyz.push_back(line_xyz[0]);
         atom_xyz.push_back(line_xyz[1]);
         atom_xyz.push_back(line_xyz[2]);
-        atom_xyz.push_back(line_xyz[3]);
+        atom_radius.push_back(line_xyz[3]);
     }
     const int n_atom = atom_radius.size();
 
